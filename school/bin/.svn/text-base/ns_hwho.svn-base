@@ -1,0 +1,118 @@
+#!/usr/bin/perl
+
+use	Socket;
+use	IO::Socket;
+use	Net::hostent;
+use	Date::Format;
+
+$SERVER		= "ns-server.epitech.eu";
+$PORT		= 4242;
+$LIST_CMD	= "list_users\n";
+$EXIT_CMD	= "exit\n";
+
+if ( $ARGV[0] ne "")
+{
+    $login_to_match = $ARGV[0];
+}
+else
+{
+    $login_to_match = ".*";
+}
+
+
+&ns_connect($SERVER,$PORT);
+ns_list_hosts();
+print $sd "exit\n";
+
+foreach $host (@host_list)
+{
+    ($num,$host,$ip,$login_time,$type,$location,$com,$auth_user,$auth_ag) = split(/\s+/,$host);
+    if ($host =~ m/$login_to_match/)
+    {
+	$date	= mk_date_str($login_time);
+	printf("%-12s[%s] %-12s %-12s  %s %s/%s\n",
+	       $host,$ip,$type,$location,$date,
+	       &process_auth_ag($auth_ag),&process_auth_user($auth_user),
+	       );
+    }
+}
+
+
+##
+## subs
+##
+
+sub	mk_date_str()
+{
+    my @day = ("dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi");
+    my $login_time = $_[0];
+
+    my $date = sprintf("%d jours",(time() - $login_time)/(24*3600));
+    if ( (time() - $login_time) < (7*24*3600) )
+    {
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime($login_time);
+	$date = sprintf("%s %02d:%2d:%02d",$day[$wday],$hour,$min,$sec);
+    }
+    if ( (time() - $login_time) < (24*3600) )
+    {
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime($login_time);
+	$date = sprintf("%02d:%02d:%02d",$hour,$min,$sec);
+    }
+    return ($date);
+}
+
+
+sub     ns_connect()
+{
+    ($server,$port) = @_;
+
+    while (!($sd = IO::Socket::INET->new(
+                                         Proto    => "tcp",
+                                         PeerAddr => $server,
+                                         PeerPort => $port,
+                                         Timeout => 3,
+                                         )))
+    {
+        print "Cannot Connect: $!\n";
+        sleep(5);
+    }
+}
+
+sub             ns_list_hosts()
+{
+    $null = <$sd>;
+    print $sd "list_hosts\n";
+    while ($line = <$sd>)
+    {
+        if ($line =~ m/cmd end/)
+        {
+            return ;
+        }
+        chomp ($line);
+        push @host_list,$line;
+    }
+}
+
+sub		process_auth_ag()
+{
+    $auth_ag = $_[0];
+
+    if ( $auth_ag > 1)
+    {
+	return (sprintf("%d:trusted",$auth_ag));
+    }
+    return (sprintf("%d:weak",$auth_ag));
+}
+
+sub		process_auth_user()
+{
+    $auth_user = $_[0];
+
+    if ( $auth_user > 1)
+    {
+	return (sprintf("%d:trusted",$auth_user));
+    }
+    return (sprintf("%d:weak",$auth_user));
+}
+
+

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 30
+/svn/afs/!svn/ver/1/school/bin
+END
+ns_send_msg
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/afs/!svn/ver/1/school/bin/ns_send_msg
+END
+clean
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/afs/!svn/ver/1/school/bin/clean
+END
+ns_hwho
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/afs/!svn/ver/1/school/bin/ns_hwho
+END
+check_sm
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/afs/!svn/ver/1/school/bin/check_sm
+END
+ns_who
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/afs/!svn/ver/1/school/bin/ns_who
+END
