@@ -5,7 +5,7 @@
 ;; Login   <root@epitech.eu>
 ;; 
 ;; Started on  Thu Aug 28 09:39:55 2008 rocky luke
-;; Last update Mon Sep 20 13:55:14 2010 john mille
+;; Last update Mon Sep 29 00:08:58 2014 root
 ;;
 
 ;; Si Makefile vide, creer une makefile
@@ -29,6 +29,8 @@
 (load "~/.emacs.d/skeleton.el")
 (load "~/.emacs.d/raccourcis.el")
 (load "~/.emacs.d/utils.el")
+(load "~/.emacs.d/yaml-mode.el")
+(load "~/.emacs.d/yaml-mode.elc")
 (load "~/.emacs.d/my.el")
 
 (if (file-exists-p "~/.myemacs") 
